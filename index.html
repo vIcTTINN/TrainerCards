@@ -5,8 +5,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meu Site</title>
 </head>
-</body>
+<body>
     <h1>Bem-vindo ao meu site!</h1>
     <p>Site hospedado no GitHub Pages.</p>
+
+    <!-- Formulário de login -->
+    <form id="login-form">
+        <input type="email" id="email" placeholder="Digite seu email" required />
+        <input type="password" id="password" placeholder="Digite sua senha" required />
+        <button type="submit">Entrar</button>
+    </form>
+
+    <!-- Adicionando o Firebase -->
+    <script type="module">
+        // Importando as funções do Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+
+        // Sua configuração do Firebase
+        const firebaseConfig = {
+            apiKey: "SUA_API_KEY",
+            authDomain: "SEU_AUTH_DOMAIN",
+            projectId: "SEU_PROJECT_ID",
+            storageBucket: "SEU_STORAGE_BUCKET",
+            messagingSenderId: "SEU_MESSAGING_SENDER_ID",
+            appId: "SEU_APP_ID",
+            measurementId: "SEU_MEASUREMENT_ID"
+        };
+
+        // Inicializa o Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth();
+
+        // Função para logar com email e senha
+        function loginWithEmail(email, password) {
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    console.log('Usuário logado:', user);
+                })
+                .catch((error) => {
+                    console.error('Erro ao logar:', error.message);
+                });
+        }
+
+        // Quando o formulário for enviado
+        document.getElementById('login-form').addEventListener('submit', (e) => {
+            e.preventDefault();  // Evita que a página recarregue
+            const email = document.getElementById('email').value;  // Pega o email
+            const password = document.getElementById('password').value;  // Pega a senha
+            loginWithEmail(email, password);  // Chama a função de login
+        });
+    </script>
 </body>
 </html>
