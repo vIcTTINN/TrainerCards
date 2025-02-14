@@ -10,58 +10,71 @@
             text-align: center;
             margin: 50px;
         }
+
+        .container {
+            width: 300px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
         input {
-            padding: 10px;
-            margin: 5px;
-            width: 250px;
+            width: 90%;
+            padding: 8px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
-        .button-container {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-        }
+
         button {
-            padding: 10px 20px;
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
             background-color: #007BFF;
             color: white;
             border: none;
+            border-radius: 5px;
             cursor: pointer;
-            width: 150px;
         }
+
         button:hover {
             background-color: #0056b3;
         }
-        .google-btn {
-            background-color: #DB4437;
+
+        .btn-google {
+            background-color: #db4437;
         }
-        .google-btn:hover {
-            background-color: #A33328;
+
+        .btn-google:hover {
+            background-color: #b33629;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
         }
     </style>
 </head>
 <body>
     <h1>Página de Login</h1>
-    <p>Aqui você poderá entrar com e-mail e senha, cadastrar-se ou usar o Google.</p>
+    <div class="container">
+        <input type="email" id="email" placeholder="Email">
+        <input type="password" id="password" placeholder="Senha">
 
-    <label for="email">E-mail:</label>
-    <input type="email" id="email" placeholder="Digite seu e-mail" required>
-    <br><br>
+        <div class="buttons">
+            <button onclick="login()">Entrar</button>
+            <button onclick="cadastrar()">Cadastrar</button>
+        </div>
 
-    <label for="senha">Senha:</label>
-    <input type="password" id="senha" placeholder="Digite sua senha" required>
-    <br><br>
-
-    <div class="button-container">
-        <button onclick="login()">Entrar</button>
-        <button onclick="cadastrar()">Cadastrar</button>
+        <button class="btn-google" onclick="loginGoogle()">Entrar com Google</button>
     </div>
-    <br><br>
-
-    <button class="google-btn" onclick="loginGoogle()">Entrar com Google</button>
-    <br><br>
+    
+    <br>
     <a href="index.html">Voltar para a Página Inicial</a>
 
-    <!-- Firebase SDKs (SEM `import`, compatível com GitHub Pages) -->
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js"></script>
 
@@ -77,52 +90,50 @@
             measurementId: "G-7PZ9HLKNSY"
         };
 
-        // Inicializando Firebase
+        // Inicializar Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const provider = new firebase.auth.GoogleAuthProvider();
 
-        console.log("🔥 Firebase carregado sem erros!");
-
-        // Função de Login com E-mail e Senha
+        // Função de login
         function login() {
             const email = document.getElementById("email").value;
-            const senha = document.getElementById("senha").value;
-
-            auth.signInWithEmailAndPassword(email, senha)
+            const password = document.getElementById("password").value;
+            
+            auth.signInWithEmailAndPassword(email, password)
                 .then((userCredential) => {
-                    alert("✅ Login realizado com sucesso!");
-                    window.location.href = "index.html";
+                    alert("Login realizado com sucesso!");
+                    console.log("Usuário logado:", userCredential.user);
                 })
                 .catch((error) => {
-                    alert("❌ Erro: " + error.message);
+                    alert("Erro ao fazer login: " + error.message);
                 });
         }
 
-        // Função de Login com Google
+        // Função de cadastro
+        function cadastrar() {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            
+            auth.createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    alert("Usuário cadastrado com sucesso!");
+                    console.log("Novo usuário:", userCredential.user);
+                })
+                .catch((error) => {
+                    alert("Erro ao cadastrar: " + error.message);
+                });
+        }
+
+        // Login com Google
         function loginGoogle() {
             auth.signInWithPopup(provider)
                 .then((result) => {
-                    alert("✅ Login com Google realizado com sucesso!");
-                    window.location.href = "index.html";
+                    alert("Login com Google realizado!");
+                    console.log("Usuário logado:", result.user);
                 })
                 .catch((error) => {
-                    alert("❌ Erro ao logar com Google: " + error.message);
-                });
-        }
-
-        // Função de Cadastro
-        function cadastrar() {
-            const email = document.getElementById("email").value;
-            const senha = document.getElementById("senha").value;
-
-            auth.createUserWithEmailAndPassword(email, senha)
-                .then((userCredential) => {
-                    alert("✅ Cadastro realizado com sucesso!");
-                    window.location.href = "index.html";
-                })
-                .catch((error) => {
-                    alert("❌ Erro no cadastro: " + error.message);
+                    alert("Erro ao fazer login com Google: " + error.message);
                 });
         }
     </script>
