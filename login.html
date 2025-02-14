@@ -61,12 +61,11 @@
     <br><br>
     <a href="index.html">Voltar para a Página Inicial</a>
 
-    <!-- Script do Firebase -->
-    <script type="module">
-        // Importando módulos do Firebase
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+    <!-- Firebase SDKs (SEM `import`, compatível com GitHub Pages) -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js"></script>
 
+    <script>
         // Configuração do Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyAv9z44vYKeIhjZs3FkaScDIKTGn1wUx_8",
@@ -78,19 +77,19 @@
             measurementId: "G-7PZ9HLKNSY"
         };
 
-        // Inicializando o Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const provider = new GoogleAuthProvider();
+        // Inicializando Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const provider = new firebase.auth.GoogleAuthProvider();
 
-        console.log("🔥 Firebase carregado!");
+        console.log("🔥 Firebase carregado sem erros!");
 
         // Função de Login com E-mail e Senha
-        window.login = function() {
+        function login() {
             const email = document.getElementById("email").value;
             const senha = document.getElementById("senha").value;
 
-            signInWithEmailAndPassword(auth, email, senha)
+            auth.signInWithEmailAndPassword(email, senha)
                 .then((userCredential) => {
                     alert("✅ Login realizado com sucesso!");
                     window.location.href = "index.html";
@@ -101,8 +100,8 @@
         }
 
         // Função de Login com Google
-        window.loginGoogle = function() {
-            signInWithPopup(auth, provider)
+        function loginGoogle() {
+            auth.signInWithPopup(provider)
                 .then((result) => {
                     alert("✅ Login com Google realizado com sucesso!");
                     window.location.href = "index.html";
@@ -113,11 +112,11 @@
         }
 
         // Função de Cadastro
-        window.cadastrar = function() {
+        function cadastrar() {
             const email = document.getElementById("email").value;
             const senha = document.getElementById("senha").value;
 
-            createUserWithEmailAndPassword(auth, email, senha)
+            auth.createUserWithEmailAndPassword(email, senha)
                 .then((userCredential) => {
                     alert("✅ Cadastro realizado com sucesso!");
                     window.location.href = "index.html";
