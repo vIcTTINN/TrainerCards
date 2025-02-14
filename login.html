@@ -10,11 +10,108 @@
             text-align: center;
             margin: 50px;
         }
+        input {
+            padding: 10px;
+            margin: 5px;
+            width: 250px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .google-btn {
+            background-color: #DB4437;
+        }
+        .google-btn:hover {
+            background-color: #A33328;
+        }
     </style>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.8.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.8.3/firebase-auth.js"></script>
+    <script>
+        // Configuração do Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAv9z44vYKeIhjZs3FkaScDIKTGn1wUx_8",
+            authDomain: "trainercards-2f2af.firebaseapp.com",
+            projectId: "trainercards-2f2af",
+            storageBucket: "trainercards-2f2af.firebasestorage.app",
+            messagingSenderId: "872674005080",
+            appId: "1:872674005080:web:b733b5d98e4c98c5dffa2d",
+            measurementId: "G-7PZ9HLKNSY"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        // Função de login com e-mail e senha
+        function login() {
+            const email = document.getElementById("email").value;
+            const senha = document.getElementById("senha").value;
+
+            auth.signInWithEmailAndPassword(email, senha)
+                .then((userCredential) => {
+                    alert("Login realizado com sucesso!");
+                    window.location.href = "index.html"; // Redireciona para a página inicial
+                })
+                .catch((error) => {
+                    alert("Erro: " + error.message);
+                });
+        }
+
+        // Função de cadastro
+        function register() {
+            const email = document.getElementById("email").value;
+            const senha = document.getElementById("senha").value;
+
+            auth.createUserWithEmailAndPassword(email, senha)
+                .then((userCredential) => {
+                    alert("Conta criada com sucesso!");
+                })
+                .catch((error) => {
+                    alert("Erro: " + error.message);
+                });
+        }
+
+        // Função de login com Google
+        function loginGoogle() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider)
+                .then((result) => {
+                    alert("Login com Google realizado com sucesso!");
+                    window.location.href = "index.html"; // Redireciona para a página inicial
+                })
+                .catch((error) => {
+                    alert("Erro ao logar com Google: " + error.message);
+                });
+        }
+    </script>
 </head>
 <body>
     <h1>Página de Login</h1>
     <p>Aqui você poderá entrar ou se cadastrar.</p>
+
+    <label for="email">E-mail:</label>
+    <input type="email" id="email" placeholder="Digite seu e-mail" required>
+    <br><br>
+
+    <label for="senha">Senha:</label>
+    <input type="password" id="senha" placeholder="Digite sua senha" required>
+    <br><br>
+
+    <button onclick="login()">Entrar</button>
+    <button onclick="register()">Cadastrar</button>
+    <br><br>
+
+    <button class="google-btn" onclick="loginGoogle()">Entrar com Google</button>
+
+    <br><br>
     <a href="index.html">Voltar para a Página Inicial</a>
 </body>
 </html>
