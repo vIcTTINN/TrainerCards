@@ -15,13 +15,18 @@
             margin: 5px;
             width: 250px;
         }
+        .button-container {
+            display: flex;
+            justify-content: center; /* Alinha os botões ao centro */
+            gap: 10px; /* Espaçamento entre os botões */
+        }
         button {
             padding: 10px 20px;
-            margin: 10px;
             background-color: #007BFF;
             color: white;
             border: none;
             cursor: pointer;
+            width: 150px; /* Definindo largura para os botões */
         }
         button:hover {
             background-color: #0056b3;
@@ -33,72 +38,6 @@
             background-color: #A33328;
         }
     </style>
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.8.3/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.8.3/firebase-auth.js"></script>
-    <script>
-        // Configuração do Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyAv9z44vYKeIhjZs3FkaScDIKTGn1wUx_8",
-            authDomain: "trainercards-2f2af.firebaseapp.com",
-            projectId: "trainercards-2f2af",
-            storageBucket: "trainercards-2f2af.firebasestorage.app",
-            messagingSenderId: "872674005080",
-            appId: "1:872674005080:web:b733b5d98e4c98c5dffa2d",
-            measurementId: "G-7PZ9HLKNSY"
-        };
-
-        // Inicializar Firebase
-        firebase.initializeApp(firebaseConfig);
-
-        // Referência para o Auth
-        const auth = firebase.auth();
-
-        console.log("🔥 Firebase Auth carregado!", auth);
-
-        // Função de login com e-mail e senha
-        function login() {
-            const email = document.getElementById("email").value;
-            const senha = document.getElementById("senha").value;
-
-            auth.signInWithEmailAndPassword(email, senha)
-                .then((userCredential) => {
-                    alert("✅ Login realizado com sucesso!");
-                    window.location.href = "index.html"; // Redireciona para a página inicial
-                })
-                .catch((error) => {
-                    alert("❌ Erro: " + error.message);
-                });
-        }
-
-        // Função de login com Google
-        function loginGoogle() {
-            const provider = new firebase.auth.GoogleAuthProvider();
-            auth.signInWithPopup(provider)
-                .then((result) => {
-                    alert("✅ Login com Google realizado com sucesso!");
-                    window.location.href = "index.html"; // Redireciona para a página inicial
-                })
-                .catch((error) => {
-                    alert("❌ Erro ao logar com Google: " + error.message);
-                });
-        }
-
-        // Função de cadastro
-        function cadastrar() {
-            const email = document.getElementById("email").value;
-            const senha = document.getElementById("senha").value;
-
-            auth.createUserWithEmailAndPassword(email, senha)
-                .then((userCredential) => {
-                    alert("✅ Cadastro realizado com sucesso!");
-                    window.location.href = "index.html"; // Redireciona para a página inicial
-                })
-                .catch((error) => {
-                    alert("❌ Erro no cadastro: " + error.message);
-                });
-        }
-    </script>
 </head>
 <body>
     <h1>Página de Login</h1>
@@ -112,16 +51,73 @@
     <input type="password" id="senha" placeholder="Digite sua senha" required>
     <br><br>
 
-    <button onclick="login()">Entrar</button>
+    <div class="button-container">
+        <button onclick="login()">Entrar</button>
+        <button onclick="cadastrar()">Cadastrar</button>
+    </div>
     <br><br>
 
     <button class="google-btn" onclick="loginGoogle()">Entrar com Google</button>
     <br><br>
-
-    <!-- Botão de Cadastro -->
-    <button onclick="cadastrar()">Cadastrar</button>
-
-    <br><br>
     <a href="index.html">Voltar para a Página Inicial</a>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.8.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.8.3/firebase-auth.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAv9z44vYKeIhjZs3FkaScDIKTGn1wUx_8",
+            authDomain: "trainercards-2f2af.firebaseapp.com",
+            projectId: "trainercards-2f2af",
+            storageBucket: "trainercards-2f2af.firebasestorage.app",
+            messagingSenderId: "872674005080",
+            appId: "1:872674005080:web:b733b5d98e4c98c5dffa2d",
+            measurementId: "G-7PZ9HLKNSY"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        console.log("🔥 Firebase Auth carregado!", auth);
+
+        function login() {
+            const email = document.getElementById("email").value;
+            const senha = document.getElementById("senha").value;
+
+            auth.signInWithEmailAndPassword(email, senha)
+                .then((userCredential) => {
+                    alert("✅ Login realizado com sucesso!");
+                    window.location.href = "index.html";
+                })
+                .catch((error) => {
+                    alert("❌ Erro: " + error.message);
+                });
+        }
+
+        function loginGoogle() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider)
+                .then((result) => {
+                    alert("✅ Login com Google realizado com sucesso!");
+                    window.location.href = "index.html";
+                })
+                .catch((error) => {
+                    alert("❌ Erro ao logar com Google: " + error.message);
+                });
+        }
+
+        function cadastrar() {
+            const email = document.getElementById("email").value;
+            const senha = document.getElementById("senha").value;
+
+            auth.createUserWithEmailAndPassword(email, senha)
+                .then((userCredential) => {
+                    alert("✅ Cadastro realizado com sucesso!");
+                    window.location.href = "index.html";
+                })
+                .catch((error) => {
+                    alert("❌ Erro no cadastro: " + error.message);
+                });
+        }
+    </script>
 </body>
 </html>
