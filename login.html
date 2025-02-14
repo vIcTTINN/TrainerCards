@@ -17,8 +17,8 @@
         }
         .button-container {
             display: flex;
-            justify-content: center; /* Alinha os botões ao centro */
-            gap: 10px; /* Espaçamento entre os botões */
+            justify-content: center;
+            gap: 10px;
         }
         button {
             padding: 10px 20px;
@@ -26,7 +26,7 @@
             color: white;
             border: none;
             cursor: pointer;
-            width: 150px; /* Definindo largura para os botões */
+            width: 150px;
         }
         button:hover {
             background-color: #0056b3;
@@ -61,12 +61,12 @@
     <br><br>
     <a href="index.html">Voltar para a Página Inicial</a>
 
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.8.3/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.8.3/firebase-auth.js"></script>
+    <!-- Script do Firebase -->
+    <script type="module">
+        // Importando módulos do Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
-    <!-- Inicialização do Firebase -->
-    <script>
         // Configuração do Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyAv9z44vYKeIhjZs3FkaScDIKTGn1wUx_8",
@@ -78,18 +78,19 @@
             measurementId: "G-7PZ9HLKNSY"
         };
 
-        // Inicializando o Firebase e o Firebase Auth
-        const app = firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();  // Aqui estamos inicializando o Firebase Auth após a configuração
+        // Inicializando o Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
 
-        console.log("🔥 Firebase Auth carregado!", auth);
+        console.log("🔥 Firebase carregado!");
 
         // Função de Login com E-mail e Senha
-        function login() {
+        window.login = function() {
             const email = document.getElementById("email").value;
             const senha = document.getElementById("senha").value;
 
-            auth.signInWithEmailAndPassword(email, senha)
+            signInWithEmailAndPassword(auth, email, senha)
                 .then((userCredential) => {
                     alert("✅ Login realizado com sucesso!");
                     window.location.href = "index.html";
@@ -100,9 +101,8 @@
         }
 
         // Função de Login com Google
-        function loginGoogle() {
-            const provider = new firebase.auth.GoogleAuthProvider();
-            auth.signInWithPopup(provider)
+        window.loginGoogle = function() {
+            signInWithPopup(auth, provider)
                 .then((result) => {
                     alert("✅ Login com Google realizado com sucesso!");
                     window.location.href = "index.html";
@@ -113,11 +113,11 @@
         }
 
         // Função de Cadastro
-        function cadastrar() {
+        window.cadastrar = function() {
             const email = document.getElementById("email").value;
             const senha = document.getElementById("senha").value;
 
-            auth.createUserWithEmailAndPassword(email, senha)
+            createUserWithEmailAndPassword(auth, email, senha)
                 .then((userCredential) => {
                     alert("✅ Cadastro realizado com sucesso!");
                     window.location.href = "index.html";
