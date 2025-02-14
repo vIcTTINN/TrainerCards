@@ -64,7 +64,10 @@
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.8.3/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.8.3/firebase-auth.js"></script>
+
+    <!-- Inicialização do Firebase -->
     <script>
+        // Configuração do Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyAv9z44vYKeIhjZs3FkaScDIKTGn1wUx_8",
             authDomain: "trainercards-2f2af.firebaseapp.com",
@@ -74,11 +77,14 @@
             appId: "1:872674005080:web:b733b5d98e4c98c5dffa2d",
             measurementId: "G-7PZ9HLKNSY"
         };
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
+
+        // Inicializando o Firebase e o Firebase Auth
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();  // Aqui estamos inicializando o Firebase Auth após a configuração
 
         console.log("🔥 Firebase Auth carregado!", auth);
 
+        // Função de Login com E-mail e Senha
         function login() {
             const email = document.getElementById("email").value;
             const senha = document.getElementById("senha").value;
@@ -93,6 +99,7 @@
                 });
         }
 
+        // Função de Login com Google
         function loginGoogle() {
             const provider = new firebase.auth.GoogleAuthProvider();
             auth.signInWithPopup(provider)
@@ -105,6 +112,7 @@
                 });
         }
 
+        // Função de Cadastro
         function cadastrar() {
             const email = document.getElementById("email").value;
             const senha = document.getElementById("senha").value;
