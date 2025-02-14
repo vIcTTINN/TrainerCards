@@ -47,8 +47,14 @@
             appId: "1:872674005080:web:b733b5d98e4c98c5dffa2d",
             measurementId: "G-7PZ9HLKNSY"
         };
+
+        // Inicializar Firebase
         firebase.initializeApp(firebaseConfig);
+
+        // Referência para o Auth
         const auth = firebase.auth();
+
+        console.log("🔥 Firebase Auth carregado!", auth);
 
         // Função de login com e-mail e senha
         function login() {
