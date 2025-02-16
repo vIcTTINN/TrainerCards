@@ -3,134 +3,164 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu Site</title>
+    <title>Login</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
+            text-align: center;
+            margin: 50px;
         }
 
-        /* Estilo do link de login */
-        .login-link {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            font-size: 16px;
-            font-weight: bold;
-            color: #007BFF;
-            text-decoration: none;
+        .container {
+            width: 300px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        input {
+            width: 90%;
             padding: 8px;
-            border: 1px solid #007BFF;
+            margin: 8px 0;
+            border: 1px solid #ccc;
             border-radius: 5px;
-            background-color: white;
-            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        .login-link:hover {
-            background-color: #007BFF;
-            color: white;
-        }
-
-        /* Estilo do nome de usuário e ícone */
-        .user-info {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            font-size: 16px;
-            font-weight: bold;
+        .buttons {
             display: flex;
-            align-items: center;
+            justify-content: space-between;
         }
 
-        .user-info img {
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            margin-right: 8px;
-        }
-
-        /* Estilo do botão de logout */
-        .logout-button {
-            margin-left: 10px;
-            padding: 6px 12px;
-            background-color: #FF5733;
+        button {
+            width: 48%;
+            padding: 10px;
+            background-color: #007BFF;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
         }
 
-        .logout-button:hover {
-            background-color: #D94A29;
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-google {
+            width: 100%;
+            background-color: #db4437;
+        }
+
+        .btn-google:hover {
+            background-color: #b33629;
         }
     </style>
 </head>
 <body>
-    <div id="auth-container">
-        <!-- Link para a página de login se o usuário não estiver autenticado -->
-        <a href="login.html" id="login-link" class="login-link">Entrar ou Cadastrar</a>
+    <h1>Página de Login</h1>
+    <div class="container">
+        <input type="email" id="email" placeholder="Email">
+        <input type="password" id="password" placeholder="Senha">
 
-        <!-- Informações do usuário e botão de logout se estiver autenticado -->
-        <div id="user-info" class="user-info" style="display: none;">
-            <img id="user-avatar" src="" alt="Avatar">
-            <span id="user-name"></span>
-            <button id="logout-button" class="logout-button">Sair</button>
+        <div class="buttons">
+            <button onclick="login()">Entrar</button>
+            <button onclick="cadastrar()">Cadastrar</button>
         </div>
+
+        <button class="btn-google" onclick="loginGoogle()">Entrar com Google</button>
     </div>
+    
+    <br>
+    <a href="index.html">Voltar para a Página Inicial</a>
 
-    <h1>Bem-vindo ao meu site!</h1>
-    <p>Site hospedado no GitHub Pages.</p>
-
-    <!-- Importando e configurando o Firebase -->
+    <!-- Firebase SDKs -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } 
+        from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
         const firebaseConfig = {
-            apiKey: "AIzaSyAv9z44vYKeIhjZs3FkaScDIKTGn1wUx_8",
-            authDomain: "trainercards-2f2af.firebaseapp.com",
-            projectId: "trainercards-2f2af",
-            storageBucket: "trainercards-2f2af.firebasestorage.app",
-            messagingSenderId: "872674005080",
-            appId: "1:872674005080:web:b733b5d98e4c98c5dffa2d",
-            measurementId: "G-7PZ9HLKNSY"
+            apiKey: "AIzaSyBp7w4FeDNUkSvv0CpuVtO1c1xm3w3aq0c",
+            authDomain: "trainercards-21331.firebaseapp.com",
+            projectId: "trainercards-21331",
+            storageBucket: "trainercards-21331.appspot.com",
+            messagingSenderId: "174531404677",
+            appId: "1:174531404677:web:d29410ea4693021c2e1aec",
+            measurementId: "G-Y4QGT8Y0P4"
         };
 
         // Inicializa o Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
 
-        // Função para verificar o estado de autenticação
-        onAuthStateChanged(auth, (user) => {
-            const loginLink = document.getElementById("login-link");
-            const userInfo = document.getElementById("user-info");
-            const userName = document.getElementById("user-name");
-            const userAvatar = document.getElementById("user-avatar");
-            const logoutButton = document.getElementById("logout-button");
+        // Função de login
+        window.login = function() {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
 
-            if (user) {
-                // Usuário autenticado
-                loginLink.style.display = "none";
-                userInfo.style.display = "flex";
-                userName.textContent = user.displayName || user.email;
-                userAvatar.src = user.photoURL || "https://www.gravatar.com/avatar/" + md5(user.email.trim().toLowerCase());
-                
-                // Botão de logout
-                logoutButton.onclick = () => {
-                    signOut(auth).then(() => {
-                        // Redirecionar para a página inicial
-                        window.location.href = window.location.href;
-                    }).catch((error) => {
-                        console.error("Erro ao sair: ", error);
-                    });
-                };
-            } else {
-                // Usuário não autenticado
-                loginLink.style.display = "inline-block";
-                userInfo.style.display = "none";
+            if (!email || !password) {
+                alert("Digite um email e/ou senha válidos.");
+                return;
             }
-        });
+
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    // Salva o estado de login no localStorage
+                    localStorage.setItem('user', JSON.stringify(userCredential.user));
+                    alert("Login realizado com sucesso!");
+                    // Redireciona para a página inicial após login bem-sucedido
+                    window.location.href = "index.html";
+                })
+                .catch((error) => {
+                    alert("Erro ao fazer login: " + error.message);
+                });
+        };
+
+        // Função de cadastro
+        window.cadastrar = function() {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            if (!email || !password) {
+                alert("Digite um email e uma senha válidos.");
+                return;
+            }
+
+            createUserWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    alert("Usuário cadastrado com sucesso!");
+                    // Redireciona para a página inicial após cadastro bem-sucedido
+                    window.location.href = "index.html";
+                })
+                .catch((error) => {
+                    if (error.code === 'auth/email-already-in-use') {
+                        alert("Este email já está em uso. Tente outro.");
+                    } else if (error.code === 'auth/invalid-email') {
+                        alert("O email inserido é inválido. Por favor, insira um email válido.");
+                    } else if (error.code === 'auth/weak-password') {
+                        alert("A senha deve ter pelo menos 6 caracteres.");
+                    } else {
+                        alert("Erro ao cadastrar: " + error.message);
+                    }
+                });
+        };
+
+        // Login com Google
+        window.loginGoogle = function() {
+            signInWithPopup(auth, provider)
+                .then((result) => {
+                    // Salva o estado de login no localStorage
+                    localStorage.setItem('user', JSON.stringify(result.user));
+                    alert("Login com Google realizado!");
+                    // Redireciona para a página inicial após login com Google
+                    window.location.href = "index.html";
+                })
+                .catch((error) => {
+                    alert("Erro ao fazer login com Google: " + error.message);
+                });
+        };
     </script>
 </body>
 </html>
