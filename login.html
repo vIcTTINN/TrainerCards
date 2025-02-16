@@ -138,11 +138,11 @@
                 });
         };
 
-        // Verifica o estado de autenticação
+        // Função de monitoramento de autenticação
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                // Usuário já logado, redireciona para a página inicial
-                window.location.href = "index.html";
+                // Aqui removemos o redirecionamento automático na carga da página de login
+                // O redirecionamento agora só ocorre após login bem-sucedido
             }
         });
     </script>
