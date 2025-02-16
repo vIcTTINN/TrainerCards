@@ -100,7 +100,7 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
-        // Verificando o estado do login ao carregar a página
+        // Verificando o estado de login ao carregar a página
         onAuthStateChanged(auth, (user) => {
             const loginLink = document.getElementById("login-link");
             const userInfo = document.getElementById("user-info");
@@ -115,12 +115,12 @@
                 userName.textContent = user.displayName || user.email; // Exibe o nome ou email
                 userAvatar.src = user.photoURL || "https://www.gravatar.com/avatar/" + md5(user.email.trim().toLowerCase());
 
-                // Botão de logout
+                // Exibe o botão de logout
+                logoutButton.style.display = "inline-block";
                 logoutButton.onclick = () => {
                     signOut(auth).then(() => {
-                        // Remover o usuário do localStorage
-                        localStorage.removeItem('user');
-                        window.location.href = window.location.href; // Atualiza a página
+                        // Limpar o usuário do localStorage e redirecionar
+                        window.location.href = "index.html"; // Redireciona para recarregar a página
                     }).catch((error) => {
                         console.error("Erro ao sair: ", error);
                     });
