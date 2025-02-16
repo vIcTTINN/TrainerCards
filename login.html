@@ -119,17 +119,7 @@
 
         // Função de cadastro
         window.cadastrar = function() {
-            const email = document.getElementById("email").value;
-            const password = document.getElementById("password").value;
-            
-            createUserWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
-                    alert("Usuário cadastrado com sucesso!");
-                    console.log("Novo usuário:", userCredential.user);
-                })
-                .catch((error) => {
-                    alert("Erro ao cadastrar: " + error.message);
-                });
+            window.location.href = "cadastro.html";  // Redireciona para a página de cadastro
         };
 
         // Login com Google
