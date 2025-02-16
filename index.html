@@ -44,9 +44,11 @@
         /* Estilo para a Pokébola */
         .pokeball {
             position: fixed;
-            top: 50%;
+            bottom: 20px; /* Posiciona a Pokébola na parte inferior */
             left: 50%;
-            transform: translate(-50%, -50%);
+            transform: translateX(-50%); /* Centraliza a Pokébola horizontalmente */
+            width: 50px; /* Tamanho pequeno da Pokébola */
+            height: auto;
             transition: transform 0.2s ease;
         }
 
@@ -57,7 +59,7 @@
             width: 300px; /* ajuste o tamanho conforme necessário */
             height: auto;
         }
-        
+
         /* Efeito de rotação para a Pokébola */
         .pokeball-rotate {
             animation: rotate 2s infinite linear;
@@ -65,10 +67,10 @@
 
         @keyframes rotate {
             from {
-                transform: translate(-50%, -50%) rotate(0deg);
+                transform: translateX(-50%) rotate(0deg);
             }
             to {
-                transform: translate(-50%, -50%) rotate(360deg);
+                transform: translateX(-50%) rotate(360deg);
             }
         }
     </style>
@@ -113,7 +115,7 @@
             var pokeball = document.querySelector('.pokeball');
             var scrollY = window.scrollY;
             var rotation = scrollY / 10; // Controla a velocidade de rotação
-            pokeball.style.transform = 'translate(-50%, -50%) rotate(' + rotation + 'deg)';
+            pokeball.style.transform = 'translateX(-50%) translateY(0) rotate(' + rotation + 'deg)';
         };
     </script>
 </body>
