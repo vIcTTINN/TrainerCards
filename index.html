@@ -12,7 +12,6 @@
             background-color: #000;
             color: white;
             overflow-x: hidden;
-            position: relative;
         }
 
         /* Estilo do link no topo */
@@ -22,80 +21,71 @@
             right: 10px;
             font-size: 16px;
             font-weight: bold;
-            color: white;
+            color: white; /* Texto branco */
             text-decoration: none;
             padding: 8px;
-            border: 2px solid white;
+            border: 2px solid white; /* Borda branca */
             border-radius: 5px;
-            background-color: black;
+            background-color: black; /* Fundo preto */
             transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         .login-link:hover {
-            background-color: #333;
+            background-color: #333; /* Fundo preto mais escuro no hover */
             color: white;
         }
 
-        /* Estilo do ícone de usuário */
-        .user-icon {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            font-size: 18px;
-            color: white;
+        /* Estilo para o conteúdo do site */
+        .content {
+            text-align: center;
+            margin-top: 100px;
         }
 
-        /* Estilo da Pokébola girando */
+        /* Estilo para a Pokébola */
         .pokeball {
             position: fixed;
-            bottom: 20px;
+            bottom: 20px; /* Posiciona a Pokébola na parte inferior */
             left: 50%;
-            transform: translateX(-50%);
-            animation: rotate 10s linear infinite;
-            width: 80px;
+            transform: translateX(-50%); /* Centraliza a Pokébola horizontalmente */
+            width: 80px; /* Tamanho da Pokébola */
+            height: auto;
+            animation: rotate 3s infinite linear; /* Gira a Pokébola em torno do próprio eixo */
         }
 
-        @keyframes rotate {
-            0% {
-                transform: translateX(-50%) rotate(0deg);
-            }
-            100% {
-                transform: translateX(-50%) rotate(360deg);
-            }
-        }
-
-        /* Logo do site no topo */
-        .logo {
-            position: absolute;
+        /* Imagem do título */
+        .title-image {
+            position: fixed;
             top: 10px;
             left: 10px;
-            width: 120px;
+            width: 350px; /* Aumento do tamanho da imagem para 350px */
             height: auto;
         }
 
+        /* Efeito de rotação contínua para a Pokébola */
+        @keyframes rotate {
+            from {
+                transform: translateX(-50%) rotate(0deg);
+            }
+            to {
+                transform: translateX(-50%) rotate(360deg);
+            }
+        }
     </style>
 </head>
 <body>
 
-    <!-- Logo do site -->
-    <img src="https://github.com/vIcTTINN/TrainerCards/blob/2cf03d98950d75e15a9d9cc2c57ac7e181e0b014/TrainerCards-16-02-2025%20(1).png" alt="Logo" class="logo">
-
     <!-- Link para a página de login -->
-    <a href="login.html" class="login-link" id="login-link">Entrar ou Cadastrar</a>
+    <a href="login.html" class="login-link">Entrar ou Cadastrar</a>
 
-    <!-- Ícone do usuário (aparece quando logado) -->
-    <div id="user-icon" class="user-icon" style="display:none;">
-        <span id="username"></span> 
-        <button onclick="logout()">Sair</button>
-    </div>
+    <!-- Imagem do título no canto superior esquerdo -->
+    <img src="https://github.com/vIcTTINN/TrainerCards/blob/2cf03d98950d75e15a9d9cc2c57ac7e181e0b014/TrainerCards-16-02-2025%20(1).png?raw=true" alt="Logo" class="title-image">
 
-    <!-- Pokébola girando -->
-    <img src="https://art.ngfiles.com/images/386000/386577_stardoge_8-bit-pokeball.png?f1446737358" alt="Pokébola" class="pokeball">
+    <!-- Imagem da Pokébola -->
+    <img src="https://art.ngfiles.com/images/386000/386577_stardoge_8-bit-pokeball.png?f1446737358" class="pokeball" alt="Pokébola">
 
     <!-- Importando e configurando o Firebase -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-analytics.js";
 
         const firebaseConfig = {
@@ -110,34 +100,6 @@
 
         const app = initializeApp(firebaseConfig);
         const analytics = getAnalytics(app);
-        const auth = getAuth();
-
-        // Verificar se o usuário está logado ao carregar a página
-        onAuthStateChanged(auth, user => {
-            const loginLink = document.getElementById('login-link');
-            const userIcon = document.getElementById('user-icon');
-            const username = document.getElementById('username');
-
-            if (user) {
-                // Se o usuário estiver logado
-                loginLink.style.display = 'none'; // Esconde o link de login
-                userIcon.style.display = 'block'; // Mostra o ícone de usuário
-                username.textContent = user.displayName || user.email.split('@')[0]; // Exibe nome do usuário ou email
-            } else {
-                // Se o usuário não estiver logado
-                loginLink.style.display = 'block'; // Exibe o link de login
-                userIcon.style.display = 'none'; // Esconde o ícone de usuário
-            }
-        });
-
-        // Função para fazer logout
-        function logout() {
-            signOut(auth).then(() => {
-                window.location.reload(); // Atualiza a página após logout
-            }).catch((error) => {
-                console.error('Erro ao deslogar:', error);
-            });
-        }
     </script>
 
 </body>
