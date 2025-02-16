@@ -11,7 +11,7 @@
             padding: 0;
         }
 
-        /* Estilo do link no topo */
+        /* Estilo do link de login */
         .login-link {
             position: fixed;
             top: 10px;
@@ -32,8 +32,8 @@
             color: white;
         }
 
-        /* Estilo da silhueta com o nome do usuário */
-        .user-icon {
+        /* Estilo do nome de usuário e ícone */
+        .user-info {
             position: fixed;
             top: 10px;
             right: 10px;
@@ -41,29 +41,42 @@
             font-weight: bold;
             display: flex;
             align-items: center;
-            color: #007BFF;
-            background-color: white;
-            padding: 8px;
-            border: 1px solid #007BFF;
-            border-radius: 5px;
         }
 
-        .user-icon img {
+        .user-info img {
             border-radius: 50%;
-            width: 20px;
-            height: 20px;
+            width: 30px;
+            height: 30px;
             margin-right: 8px;
+        }
+
+        /* Estilo do botão de logout */
+        .logout-button {
+            margin-left: 10px;
+            padding: 6px 12px;
+            background-color: #FF5733;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .logout-button:hover {
+            background-color: #D94A29;
         }
     </style>
 </head>
 <body>
-    <!-- Link para a página de login (aparece se não estiver logado) -->
-    <a href="login.html" class="login-link" id="loginLink">Entrar ou Cadastrar</a>
+    <div id="auth-container">
+        <!-- Link para a página de login se o usuário não estiver autenticado -->
+        <a href="login.html" id="login-link" class="login-link">Entrar ou Cadastrar</a>
 
-    <!-- Exibe o ícone do usuário (aparece se estiver logado) -->
-    <div class="user-icon" id="userIcon" style="display: none;">
-        <img src="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp" alt="User Icon">
-        <span id="username"></span>
+        <!-- Informações do usuário e botão de logout se estiver autenticado -->
+        <div id="user-info" class="user-info" style="display: none;">
+            <img id="user-avatar" src="" alt="Avatar">
+            <span id="user-name"></span>
+            <button id="logout-button" class="logout-button">Sair</button>
+        </div>
     </div>
 
     <h1>Bem-vindo ao meu site!</h1>
@@ -72,7 +85,7 @@
     <!-- Importando e configurando o Firebase -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        import { getAuth, onAuthStateChanged, signOut, getProfile } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAv9z44vYKeIhjZs3FkaScDIKTGn1wUx_8",
@@ -84,28 +97,38 @@
             measurementId: "G-7PZ9HLKNSY"
         };
 
+        // Inicializa o Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
-        // Verifica se o usuário está logado
+        // Função para verificar o estado de autenticação
         onAuthStateChanged(auth, (user) => {
-            if (user) {
-                // Se o usuário estiver logado, exibe a silhueta com o nome
-                const userIcon = document.getElementById('userIcon');
-                const username = document.getElementById('username');
-                const loginLink = document.getElementById('loginLink');
-                userIcon.style.display = 'flex';
-                loginLink.style.display = 'none';
-                username.textContent = user.displayName || 'Usuário';
+            const loginLink = document.getElementById("login-link");
+            const userInfo = document.getElementById("user-info");
+            const userName = document.getElementById("user-name");
+            const userAvatar = document.getElementById("user-avatar");
+            const logoutButton = document.getElementById("logout-button");
 
-                // Se desejar, também pode mostrar a foto do perfil
-                // userIcon.querySelector('img').src = user.photoURL || 'URL-DEFAULT-IMAGE';
+            if (user) {
+                // Usuário autenticado
+                loginLink.style.display = "none";
+                userInfo.style.display = "flex";
+                userName.textContent = user.displayName || user.email;
+                userAvatar.src = "https://www.gravatar.com/avatar/" + md5(user.email.trim().toLowerCase());
+                
+                // Botão de logout
+                logoutButton.onclick = () => {
+                    signOut(auth).then(() => {
+                        // Redirecionar para a página inicial
+                        window.location.href = window.location.href;
+                    }).catch((error) => {
+                        console.error("Erro ao sair: ", error);
+                    });
+                };
             } else {
-                // Se não estiver logado, exibe o link de login
-                const loginLink = document.getElementById('loginLink');
-                const userIcon = document.getElementById('userIcon');
-                loginLink.style.display = 'inline-block';
-                userIcon.style.display = 'none';
+                // Usuário não autenticado
+                loginLink.style.display = "inline-block";
+                userInfo.style.display = "none";
             }
         });
     </script>
