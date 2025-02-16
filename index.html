@@ -5,13 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meu Site</title>
     <style>
+        /* Estilo geral da página */
         body {
-            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            background-color: black; /* Fundo preto */
+            font-family: Arial, sans-serif;
+            overflow-x: hidden; /* Impede o scroll horizontal */
         }
 
-        /* Estilo do link de login */
+        /* Animação da Pokébola */
+        .pokebola {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 100px;
+            height: 100px;
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/4/43/Pokeball.svg'); /* Coloque o link da Pokébola aqui */
+            background-size: cover;
+            z-index: 10;
+            animation: movePokebola 10s infinite linear;
+        }
+
+        /* Movimento da Pokébola */
+        @keyframes movePokebola {
+            0% {
+                transform: translateY(0) translateX(0);
+            }
+            50% {
+                transform: translateY(-50px) translateX(50px);
+            }
+            100% {
+                transform: translateY(0) translateX(0);
+            }
+        }
+
+        /* Estilo do link no topo */
         .login-link {
             position: fixed;
             top: 10px;
@@ -32,60 +61,40 @@
             color: white;
         }
 
-        /* Estilo do nome de usuário e ícone */
-        .user-info {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            font-size: 16px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-        }
-
-        .user-info img {
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            margin-right: 8px;
-        }
-
-        /* Estilo do botão de logout */
-        .logout-button {
-            margin-left: 10px;
-            padding: 6px 12px;
-            background-color: #FF5733;
+        /* Conteúdo da página */
+        .content {
             color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
+            padding: 20px;
         }
 
-        .logout-button:hover {
-            background-color: #D94A29;
+        h1 {
+            text-align: center;
+            font-size: 36px;
         }
+
+        p {
+            text-align: center;
+            font-size: 18px;
+        }
+
     </style>
 </head>
 <body>
-    <div id="auth-container">
-        <!-- Link para a página de login se o usuário não estiver autenticado -->
-        <a href="login.html" id="login-link" class="login-link">Entrar ou Cadastrar</a>
+    <!-- Link para a página de login -->
+    <a href="login.html" class="login-link">Entrar ou Cadastrar</a>
 
-        <!-- Informações do usuário e botão de logout se estiver autenticado -->
-        <div id="user-info" class="user-info" style="display: none;">
-            <img id="user-avatar" src="" alt="Avatar">
-            <span id="user-name"></span>
-            <button id="logout-button" class="logout-button">Sair</button>
-        </div>
+    <!-- Pokébola animada -->
+    <div class="pokebola"></div>
+    
+    <div class="content">
+        <h1>Bem-vindo ao meu site!</h1>
+        <p>Este é um site com fundo preto e uma Pokébola animada!</p>
     </div>
-
-    <h1>Bem-vindo ao meu site!</h1>
-    <p>Site hospedado no GitHub Pages.</p>
 
     <!-- Importando e configurando o Firebase -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        import { initializeApp } from "firebase/app";
+        import { getAnalytics } from "firebase/analytics";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAv9z44vYKeIhjZs3FkaScDIKTGn1wUx_8",
@@ -98,39 +107,7 @@
         };
 
         const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-
-        // Verificando o estado de login ao carregar a página
-        onAuthStateChanged(auth, (user) => {
-            const loginLink = document.getElementById("login-link");
-            const userInfo = document.getElementById("user-info");
-            const userName = document.getElementById("user-name");
-            const userAvatar = document.getElementById("user-avatar");
-            const logoutButton = document.getElementById("logout-button");
-
-            if (user) {
-                // Usuário autenticado
-                loginLink.style.display = "none"; // Esconde o link de login
-                userInfo.style.display = "flex";  // Exibe as informações do usuário
-                userName.textContent = user.displayName || user.email; // Exibe o nome ou email
-                userAvatar.src = user.photoURL || "https://www.gravatar.com/avatar/" + md5(user.email.trim().toLowerCase());
-
-                // Exibe o botão de logout
-                logoutButton.style.display = "inline-block";
-                logoutButton.onclick = () => {
-                    signOut(auth).then(() => {
-                        // Limpar o usuário do localStorage e redirecionar
-                        window.location.href = "index.html"; // Redireciona para recarregar a página
-                    }).catch((error) => {
-                        console.error("Erro ao sair: ", error);
-                    });
-                };
-            } else {
-                // Usuário não autenticado
-                loginLink.style.display = "inline-block"; // Exibe o link de login
-                userInfo.style.display = "none"; // Esconde as informações do usuário
-            }
-        });
+        const analytics = getAnalytics(app);
     </script>
 </body>
 </html>
