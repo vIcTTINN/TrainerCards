@@ -5,39 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meu Site</title>
     <style>
-        /* Estilo geral da página */
         body {
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
             background-color: black; /* Fundo preto */
-            font-family: Arial, sans-serif;
-            overflow-x: hidden; /* Impede o scroll horizontal */
-        }
-
-        /* Animação da Pokébola */
-        .pokebola {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 100px;
-            height: 100px;
-            background-image: url('https://upload.wikimedia.org/wikipedia/commons/4/43/Pokeball.svg'); /* Coloque o link da Pokébola aqui */
-            background-size: cover;
-            z-index: 10;
-            animation: movePokebola 10s infinite linear;
-        }
-
-        /* Movimento da Pokébola */
-        @keyframes movePokebola {
-            0% {
-                transform: translateY(0) translateX(0);
-            }
-            50% {
-                transform: translateY(-50px) translateX(50px);
-            }
-            100% {
-                transform: translateY(0) translateX(0);
-            }
         }
 
         /* Estilo do link no topo */
@@ -61,20 +33,25 @@
             color: white;
         }
 
-        /* Conteúdo da página */
-        .content {
-            color: white;
-            padding: 20px;
+        /* Estilo da Pokébola */
+        #pokebola {
+            position: fixed;
+            bottom: 50px; /* Distância da parte inferior da tela */
+            left: 50%; /* Alinha horizontalmente no centro */
+            transform: translateX(-50%); /* Ajuste fino para centralizar */
+            width: 100px; /* Tamanho da Pokébola */
+            height: 100px; /* Tamanho da Pokébola */
+            background-image: url('https://art.ngfiles.com/images/386000/386577_stardoge_8-bit-pokeball.png?f1446737358');
+            background-size: cover; /* Faz a imagem cobrir o elemento */
+            background-repeat: no-repeat;
+            background-position: center;
+            z-index: 10;
+            transition: transform 0.1s ease; /* Animação suave */
         }
 
-        h1 {
-            text-align: center;
-            font-size: 36px;
-        }
-
-        p {
-            text-align: center;
-            font-size: 18px;
+        /* Animação do efeito de rotação */
+        .rotate {
+            transform: translateX(-50%) rotate(360deg);
         }
 
     </style>
@@ -83,13 +60,8 @@
     <!-- Link para a página de login -->
     <a href="login.html" class="login-link">Entrar ou Cadastrar</a>
 
-    <!-- Pokébola animada -->
-    <div class="pokebola"></div>
-    
-    <div class="content">
-        <h1>Bem-vindo ao meu site!</h1>
-        <p>Este é um site com fundo preto e uma Pokébola animada!</p>
-    </div>
+    <h1>Bem-vindo ao meu site!</h1>
+    <p>Site hospedado no GitHub Pages.</p>
 
     <!-- Importando e configurando o Firebase -->
     <script type="module">
@@ -109,5 +81,18 @@
         const app = initializeApp(firebaseConfig);
         const analytics = getAnalytics(app);
     </script>
+
+    <div id="pokebola"></div>
+
+    <script>
+        window.addEventListener('scroll', function() {
+            const pokebola = document.getElementById('pokebola');
+            let scrollPosition = window.scrollY; // Posição de rolagem vertical
+
+            // Aplica a rotação com base na rolagem da página
+            pokebola.style.transform = 'translateX(-50%) rotate(' + (scrollPosition / 2) + 'deg)';
+        });
+    </script>
+
 </body>
 </html>
