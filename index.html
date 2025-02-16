@@ -47,9 +47,9 @@
             bottom: 20px; /* Posiciona a Pokébola na parte inferior */
             left: 50%;
             transform: translateX(-50%); /* Centraliza a Pokébola horizontalmente */
-            width: 50px; /* Tamanho pequeno da Pokébola */
+            width: 100px; /* Aumenta o tamanho da Pokébola */
             height: auto;
-            transition: transform 0.2s ease;
+            animation: rotate 2s infinite linear; /* Adiciona animação para girar */
         }
 
         /* Imagem do título */
@@ -61,11 +61,7 @@
             height: auto;
         }
 
-        /* Efeito de rotação para a Pokébola */
-        .pokeball-rotate {
-            animation: rotate 2s infinite linear;
-        }
-
+        /* Efeito de rotação contínua para a Pokébola */
         @keyframes rotate {
             from {
                 transform: translateX(-50%) rotate(0deg);
@@ -104,16 +100,6 @@
 
         const app = initializeApp(firebaseConfig);
         const analytics = getAnalytics(app);
-    </script>
-
-    <!-- Função para rotação da Pokébola -->
-    <script>
-        window.onscroll = function() {
-            var pokeball = document.querySelector('.pokeball');
-            var scrollY = window.scrollY;
-            var rotation = scrollY / 5; // Controla a velocidade de rotação (ajuste conforme necessário)
-            pokeball.style.transform = 'translateX(-50%) rotate(' + rotation + 'deg)';
-        };
     </script>
 
 </body>
