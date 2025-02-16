@@ -85,7 +85,7 @@
     <img src="https://github.com/vIcTTINN/TrainerCards/blob/2cf03d98950d75e15a9d9cc2c57ac7e181e0b014/TrainerCards-16-02-2025%20(1).png?raw=true" alt="Logo" class="title-image">
 
     <!-- Imagem da Pokébola -->
-    <img src="https://art.ngfiles.com/images/386000/386577_stardoge_8-bit-pokeball.png?f1446737358" class="pokeball pokeball-rotate" alt="Pokébola">
+    <img src="https://art.ngfiles.com/images/386000/386577_stardoge_8-bit-pokeball.png?f1446737358" class="pokeball" alt="Pokébola">
 
     <!-- Importando e configurando o Firebase -->
     <script type="module">
@@ -111,9 +111,10 @@
         window.onscroll = function() {
             var pokeball = document.querySelector('.pokeball');
             var scrollY = window.scrollY;
-            var rotation = scrollY / 10; // Controla a velocidade de rotação
-            pokeball.style.transform = 'translateX(-50%) translateY(0) rotate(' + rotation + 'deg)';
+            var rotation = scrollY / 5; // Controla a velocidade de rotação (ajuste conforme necessário)
+            pokeball.style.transform = 'translateX(-50%) rotate(' + rotation + 'deg)';
         };
     </script>
+
 </body>
 </html>
