@@ -74,18 +74,19 @@
     <br>
     <a href="index.html">Voltar para a Página Inicial</a>
 
-    <!-- Firebase SDKs usando módulos -->
+    <!-- Firebase SDKs -->
     <script type="module">
-        // Importando Firebase
+        // Importa os módulos do Firebase corretamente
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } 
+        from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
         // Configuração do Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyBp7w4FeDNUkSvv0CpuVtO1c1xm3w3aq0c",
             authDomain: "trainercards-21331.firebaseapp.com",
             projectId: "trainercards-21331",
-            storageBucket: "trainercards-21331.firebasestorage.app",
+            storageBucket: "trainercards-21331.appspot.com",
             messagingSenderId: "174531404677",
             appId: "1:174531404677:web:d29410ea4693021c2e1aec",
             measurementId: "G-Y4QGT8Y0P4"
@@ -100,7 +101,7 @@
         window.login = function() {
             const email = document.getElementById("email").value;
             const password = document.getElementById("password").value;
-
+            
             signInWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
                     alert("Login realizado com sucesso!");
@@ -115,7 +116,7 @@
         window.cadastrar = function() {
             const email = document.getElementById("email").value;
             const password = document.getElementById("password").value;
-
+            
             createUserWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
                     alert("Usuário cadastrado com sucesso!");
