@@ -5,7 +5,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <style>
-        /* Estilos já existentes... */
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+
+        .container {
+            width: 300px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        input {
+            width: 90%;
+            padding: 8px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        button {
+            width: 48%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-google {
+            width: 100%;
+            background-color: #db4437;
+        }
+
+        .btn-google:hover {
+            background-color: #b33629;
+        }
     </style>
 </head>
 <body>
@@ -28,7 +77,7 @@
     <!-- Firebase SDKs -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } 
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } 
         from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
         const firebaseConfig = {
@@ -46,14 +95,6 @@
         const auth = getAuth(app);
         const provider = new GoogleAuthProvider();
 
-        // Verificar se o usuário já está logado ao abrir a página
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                // Se o usuário já estiver logado, redireciona para a página inicial
-                window.location.href = "index.html";
-            }
-        });
-
         // Função de login
         window.login = function() {
             const email = document.getElementById("email").value;
@@ -67,7 +108,7 @@
             signInWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
                     alert("Login realizado com sucesso!");
-                    // Redireciona para a página inicial
+                    // Redireciona para a página inicial apenas após login bem-sucedido
                     window.location.href = "index.html";
                 })
                 .catch((error) => {
@@ -83,7 +124,7 @@
             createUserWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
                     alert("Usuário cadastrado com sucesso!");
-                    // Redireciona para a página inicial após cadastro
+                    // Redireciona para a página inicial após cadastro bem-sucedido
                     window.location.href = "index.html";
                 })
                 .catch((error) => {
