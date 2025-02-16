@@ -102,7 +102,7 @@
         };
 
         // Inicializa o Firebase
-        firebase.initializeApp(firebaseConfig);
+        const app = firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const provider = new firebase.auth.GoogleAuthProvider();
 
@@ -115,6 +115,7 @@
                 .then((userCredential) => {
                     alert("Login realizado com sucesso!");
                     console.log("Usuário logado:", userCredential.user);
+                    // Redirecionar para outra página ou realizar ações adicionais
                 })
                 .catch((error) => {
                     alert("Erro ao fazer login: " + error.message);
@@ -130,6 +131,7 @@
                 .then((userCredential) => {
                     alert("Usuário cadastrado com sucesso!");
                     console.log("Novo usuário:", userCredential.user);
+                    // Redirecionar para outra página ou realizar ações adicionais
                 })
                 .catch((error) => {
                     alert("Erro ao cadastrar: " + error.message);
@@ -142,6 +144,7 @@
                 .then((result) => {
                     alert("Login com Google realizado!");
                     console.log("Usuário logado:", result.user);
+                    // Redirecionar para outra página ou realizar ações adicionais
                 })
                 .catch((error) => {
                     alert("Erro ao fazer login com Google: " + error.message);
