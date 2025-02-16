@@ -78,7 +78,7 @@
     <script type="module">
         // Importa os módulos do Firebase corretamente
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } 
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } 
         from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
         // Configuração do Firebase
@@ -111,6 +111,8 @@
                 .then((userCredential) => {
                     alert("Login realizado com sucesso!");
                     console.log("Usuário logado:", userCredential.user);
+                    // Redireciona para a página inicial após login bem-sucedido
+                    window.location.href = "index.html";
                 })
                 .catch((error) => {
                     alert("Erro ao fazer login: " + error.message);
@@ -128,11 +130,21 @@
                 .then((result) => {
                     alert("Login com Google realizado!");
                     console.log("Usuário logado:", result.user);
+                    // Redireciona para a página inicial após login bem-sucedido
+                    window.location.href = "index.html";
                 })
                 .catch((error) => {
                     alert("Erro ao fazer login com Google: " + error.message);
                 });
         };
+
+        // Verifica o estado de autenticação
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // Usuário já logado, redireciona para a página inicial
+                window.location.href = "index.html";
+            }
+        });
     </script>
 </body>
 </html>
