@@ -3,109 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu Site</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-
-        /* Estilo do link no topo */
-        .login-link {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            font-size: 16px;
-            font-weight: bold;
-            color: #007BFF;
-            text-decoration: none;
-            padding: 8px;
-            border: 1px solid #007BFF;
-            border-radius: 5px;
-            background-color: white;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        .login-link:hover {
-            background-color: #007BFF;
-            color: white;
-        }
-
-        .user-info {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .user-info img {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-        }
-
-        .user-info span {
-            font-size: 16px;
-            font-weight: bold;
-        }
-    </style>
+    <title>Login</title>
 </head>
 <body>
-    <!-- Espaço para o conteúdo do usuário -->
-    <div id="user-info" class="user-info" style="display: none;">
-        <img id="user-avatar" src="" alt="User Avatar">
-        <span id="user-name"></span>
-    </div>
+    <h1>Entrar</h1>
+    
+    <form id="login-form">
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="password" id="password" placeholder="Senha" required>
+        <button type="submit">Entrar</button>
+    </form>
 
-    <!-- Link para a página de login (exibido somente se o usuário não estiver logado) -->
-    <a href="login.html" class="login-link" id="login-link">Entrar ou Cadastrar</a>
-
-    <h1>Bem-vindo ao meu site!</h1>
-    <p>Site hospedado no GitHub Pages.</p>
-
-    <!-- Importando e configurando o Firebase -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        const auth = getAuth();
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyAv9z44vYKeIhjZs3FkaScDIKTGn1wUx_8",
-            authDomain: "trainercards-2f2af.firebaseapp.com",
-            projectId: "trainercards-2f2af",
-            storageBucket: "trainercards-2f2af.firebasestorage.app",
-            messagingSenderId: "872674005080",
-            appId: "1:872674005080:web:b733b5d98e4c98c5dffa2d",
-            measurementId: "G-7PZ9HLKNSY"
-        };
+        const form = document.getElementById('login-form');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-
-        // Função que é executada quando o estado do login muda
-        onAuthStateChanged(auth, (user) => {
-            console.log("Auth state changed:", user); // Log para ver o estado da autenticação
-
-            const loginLink = document.getElementById("login-link");
-            const userInfo = document.getElementById("user-info");
-            const userName = document.getElementById("user-name");
-            const userAvatar = document.getElementById("user-avatar");
-
-            if (user) {
-                // Se o usuário estiver logado, esconde o link de login
-                loginLink.style.display = "none";
-                
-                // Exibe a silhueta e o nome do usuário
-                userInfo.style.display = "flex";
-                userName.textContent = user.displayName || user.email.split('@')[0]; // Exibe nome ou email
-                userAvatar.src = user.photoURL || 'https://www.w3schools.com/w3images/avatar2.png'; // Imagem do avatar
-            } else {
-                // Se o usuário não estiver logado, exibe o link de login
-                loginLink.style.display = "block";
-                userInfo.style.display = "none";
-            }
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    // Redireciona após login bem-sucedido
+                    window.location.href = 'index.html'; // Redireciona para a página inicial
+                })
+                .catch((error) => {
+                    alert('Erro ao fazer login: ' + error.message);
+                });
         });
     </script>
 </body>
