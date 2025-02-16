@@ -3,36 +3,133 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Meu Site</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Estilo do link de login */
+        .login-link {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #007BFF;
+            text-decoration: none;
+            padding: 8px;
+            border: 1px solid #007BFF;
+            border-radius: 5px;
+            background-color: white;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .login-link:hover {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        /* Estilo do nome de usuário e ícone */
+        .user-info {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .user-info img {
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            margin-right: 8px;
+        }
+
+        /* Estilo do botão de logout */
+        .logout-button {
+            margin-left: 10px;
+            padding: 6px 12px;
+            background-color: #FF5733;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .logout-button:hover {
+            background-color: #D94A29;
+        }
+    </style>
 </head>
 <body>
-    <h1>Entrar</h1>
-    
-    <form id="login-form">
-        <input type="email" id="email" placeholder="Email" required>
-        <input type="password" id="password" placeholder="Senha" required>
-        <button type="submit">Entrar</button>
-    </form>
+    <div id="auth-container">
+        <!-- Link para a página de login se o usuário não estiver autenticado -->
+        <a href="login.html" id="login-link" class="login-link">Entrar ou Cadastrar</a>
 
+        <!-- Informações do usuário e botão de logout se estiver autenticado -->
+        <div id="user-info" class="user-info" style="display: none;">
+            <img id="user-avatar" src="" alt="Avatar">
+            <span id="user-name"></span>
+            <button id="logout-button" class="logout-button">Sair</button>
+        </div>
+    </div>
+
+    <h1>Bem-vindo ao meu site!</h1>
+    <p>Site hospedado no GitHub Pages.</p>
+
+    <!-- Importando e configurando o Firebase -->
     <script type="module">
-        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-        const auth = getAuth();
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
-        const form = document.getElementById('login-form');
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+        const firebaseConfig = {
+            apiKey: "AIzaSyAv9z44vYKeIhjZs3FkaScDIKTGn1wUx_8",
+            authDomain: "trainercards-2f2af.firebaseapp.com",
+            projectId: "trainercards-2f2af",
+            storageBucket: "trainercards-2f2af.firebasestorage.app",
+            messagingSenderId: "872674005080",
+            appId: "1:872674005080:web:b733b5d98e4c98c5dffa2d",
+            measurementId: "G-7PZ9HLKNSY"
+        };
 
-            signInWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
-                    // Redireciona após login bem-sucedido
-                    window.location.href = 'index.html'; // Redireciona para a página inicial
-                })
-                .catch((error) => {
-                    alert('Erro ao fazer login: ' + error.message);
-                });
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Verificando o estado de login ao carregar a página
+        onAuthStateChanged(auth, (user) => {
+            const loginLink = document.getElementById("login-link");
+            const userInfo = document.getElementById("user-info");
+            const userName = document.getElementById("user-name");
+            const userAvatar = document.getElementById("user-avatar");
+            const logoutButton = document.getElementById("logout-button");
+
+            if (user) {
+                // Usuário autenticado
+                loginLink.style.display = "none"; // Esconde o link de login
+                userInfo.style.display = "flex";  // Exibe as informações do usuário
+                userName.textContent = user.displayName || user.email; // Exibe o nome ou email
+                userAvatar.src = user.photoURL || "https://www.gravatar.com/avatar/" + md5(user.email.trim().toLowerCase());
+
+                // Exibe o botão de logout
+                logoutButton.style.display = "inline-block";
+                logoutButton.onclick = () => {
+                    signOut(auth).then(() => {
+                        // Limpar o usuário do localStorage e redirecionar
+                        window.location.href = "index.html"; // Redireciona para recarregar a página
+                    }).catch((error) => {
+                        console.error("Erro ao sair: ", error);
+                    });
+                };
+            } else {
+                // Usuário não autenticado
+                loginLink.style.display = "inline-block"; // Exibe o link de login
+                userInfo.style.display = "none"; // Esconde as informações do usuário
+            }
         });
     </script>
 </body>
