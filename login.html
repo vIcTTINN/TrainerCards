@@ -74,21 +74,11 @@
     <br>
     <a href="index.html">Voltar para a Página Inicial</a>
 
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js"></script>
-
-    <script>
-        // Verifica se o Firebase está sendo carregado corretamente
-        document.addEventListener("DOMContentLoaded", function() {
-            console.log("Página carregada!");
-
-            if (typeof firebase === "undefined") {
-                console.error("Firebase não carregou corretamente!");
-            } else {
-                console.log("Firebase carregado com sucesso!");
-            }
-        });
+    <!-- Firebase SDKs usando módulos -->
+    <script type="module">
+        // Importando Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
         // Configuração do Firebase
         const firebaseConfig = {
@@ -102,20 +92,19 @@
         };
 
         // Inicializa o Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const provider = new firebase.auth.GoogleAuthProvider();
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
 
         // Função de login
         window.login = function() {
             const email = document.getElementById("email").value;
             const password = document.getElementById("password").value;
-            
-            auth.signInWithEmailAndPassword(email, password)
+
+            signInWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
                     alert("Login realizado com sucesso!");
                     console.log("Usuário logado:", userCredential.user);
-                    // Redirecionar para outra página ou realizar ações adicionais
                 })
                 .catch((error) => {
                     alert("Erro ao fazer login: " + error.message);
@@ -126,12 +115,11 @@
         window.cadastrar = function() {
             const email = document.getElementById("email").value;
             const password = document.getElementById("password").value;
-            
-            auth.createUserWithEmailAndPassword(email, password)
+
+            createUserWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
                     alert("Usuário cadastrado com sucesso!");
                     console.log("Novo usuário:", userCredential.user);
-                    // Redirecionar para outra página ou realizar ações adicionais
                 })
                 .catch((error) => {
                     alert("Erro ao cadastrar: " + error.message);
@@ -140,11 +128,10 @@
 
         // Login com Google
         window.loginGoogle = function() {
-            auth.signInWithPopup(provider)
+            signInWithPopup(auth, provider)
                 .then((result) => {
                     alert("Login com Google realizado!");
                     console.log("Usuário logado:", result.user);
-                    // Redirecionar para outra página ou realizar ações adicionais
                 })
                 .catch((error) => {
                     alert("Erro ao fazer login com Google: " + error.message);
