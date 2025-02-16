@@ -77,7 +77,7 @@
     <!-- Firebase SDKs -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } 
+        import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } 
         from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
         const firebaseConfig = {
@@ -116,33 +116,9 @@
                 });
         };
 
-        // Função de cadastro
+        // Função de cadastro corrigida (redireciona para a página de cadastro)
         window.cadastrar = function() {
-            const email = document.getElementById("email").value;
-            const password = document.getElementById("password").value;
-
-            if (!email || !password) {
-                alert("Digite um email e uma senha válidos.");
-                return;
-            }
-
-            createUserWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
-                    alert("Usuário cadastrado com sucesso!");
-                    // Redireciona para a página inicial após cadastro bem-sucedido
-                    window.location.href = "index.html";
-                })
-                .catch((error) => {
-                    if (error.code === 'auth/email-already-in-use') {
-                        alert("Este email já está em uso. Tente outro.");
-                    } else if (error.code === 'auth/invalid-email') {
-                        alert("O email inserido é inválido. Por favor, insira um email válido.");
-                    } else if (error.code === 'auth/weak-password') {
-                        alert("A senha deve ter pelo menos 6 caracteres.");
-                    } else {
-                        alert("Erro ao cadastrar: " + error.message);
-                    }
-                });
+            window.location.href = "cadastro.html";
         };
 
         // Login com Google
