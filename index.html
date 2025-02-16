@@ -11,87 +11,96 @@
             padding: 0;
             background-color: #000;
             color: white;
+            overflow-x: hidden;
         }
 
-        /* Link para login no topo */
+        /* Estilo do link no topo */
         .login-link {
             position: fixed;
             top: 10px;
             right: 10px;
             font-size: 16px;
             font-weight: bold;
-            color: white;
+            color: white; /* Texto branco */
             text-decoration: none;
             padding: 8px;
-            border: 1px solid white;
+            border: 2px solid white; /* Borda branca */
             border-radius: 5px;
-            background-color: black;
+            background-color: black; /* Fundo preto */
             transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         .login-link:hover {
-            background-color: #007BFF;
+            background-color: #333; /* Fundo preto mais escuro no hover */
             color: white;
         }
 
-        /* Estilo da Pokébola girando */
+        /* Estilo para o conteúdo do site */
+        .content {
+            text-align: center;
+            margin-top: 100px;
+        }
+
+        /* Estilo para a Pokébola */
         .pokeball {
             position: fixed;
-            bottom: 10px;
+            bottom: 20px; /* Posiciona a Pokébola na parte inferior */
             left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 100px;
-            background: url('https://art.ngfiles.com/images/386000/386577_stardoge_8-bit-pokeball.png?f1446737358') no-repeat center center;
-            background-size: cover;
-            border-radius: 50%;
-            animation: spin 10s linear infinite;
+            transform: translateX(-50%); /* Centraliza a Pokébola horizontalmente */
+            width: 80px; /* Tamanho da Pokébola */
+            height: auto;
+            animation: rotate 3s infinite linear; /* Gira a Pokébola em torno do próprio eixo */
         }
 
-        @keyframes spin {
-            0% {
-                transform: translateX(-50%) rotate(0deg);
-            }
-            100% {
-                transform: translateX(-50%) rotate(360deg);
-            }
-        }
-
-        /* Título */
-        h1 {
-            text-align: center;
-            color: white;
-            margin-top: 50px;
-        }
-
-        /* Estilo para o conteúdo */
-        p {
-            text-align: center;
-            color: white;
-            font-size: 18px;
-        }
-
-        /* Estilo da imagem no topo */
-        .logo {
+        /* Imagem do título */
+        .title-image {
             position: fixed;
             top: 10px;
             left: 10px;
-            width: 150px;
+            width: 350px; /* Aumento do tamanho da imagem para 350px */
             height: auto;
+        }
+
+        /* Efeito de rotação contínua para a Pokébola */
+        @keyframes rotate {
+            from {
+                transform: translateX(-50%) rotate(0deg);
+            }
+            to {
+                transform: translateX(-50%) rotate(360deg);
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Imagem no topo -->
-    <img src="https://github.com/vIcTTINN/TrainerCards/blob/2cf03d98950d75e15a9d9cc2c57ac7e181e0b014/TrainerCards-16-02-2025%20(1).png?raw=true" alt="Logo" class="logo">
 
-    <!-- Link para login -->
+    <!-- Link para a página de login -->
     <a href="login.html" class="login-link">Entrar ou Cadastrar</a>
 
-    <h1>Bem-vindo ao meu site!</h1>
-    <p>Site hospedado no GitHub Pages.</p>
+    <!-- Imagem do título no canto superior esquerdo -->
+    <img src="https://github.com/vIcTTINN/TrainerCards/blob/2cf03d98950d75e15a9d9cc2c57ac7e181e0b014/TrainerCards-16-02-2025%20(1).png?raw=true" alt="Logo" class="title-image">
 
-    <!-- Pokébola girando no fundo -->
-    <div class="pokeball"></div>
+    <!-- Imagem da Pokébola -->
+    <img src="https://art.ngfiles.com/images/386000/386577_stardoge_8-bit-pokeball.png?f1446737358" class="pokeball" alt="Pokébola">
+
+    <!-- Importando e configurando o Firebase -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-analytics.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAv9z44vYKeIhjZs3FkaScDIKTGn1wUx_8",
+            authDomain: "trainercards-2f2af.firebaseapp.com",
+            projectId: "trainercards-2f2af",
+            storageBucket: "trainercards-2f2af.firebasestorage.app",
+            messagingSenderId: "872674005080",
+            appId: "1:872674005080:web:b733b5d98e4c98c5dffa2d",
+            measurementId: "G-7PZ9HLKNSY"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+    </script>
+
 </body>
 </html>
