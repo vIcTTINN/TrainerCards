@@ -108,7 +108,7 @@
             signInWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
                     alert("Login realizado com sucesso!");
-                    // Redireciona para a página inicial apenas após login bem-sucedido
+                    // Redireciona para a página inicial após login bem-sucedido
                     window.location.href = "index.html";
                 })
                 .catch((error) => {
@@ -121,6 +121,11 @@
             const email = document.getElementById("email").value;
             const password = document.getElementById("password").value;
 
+            if (!email || !password) {
+                alert("Digite um email e uma senha válidos.");
+                return;
+            }
+
             createUserWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
                     alert("Usuário cadastrado com sucesso!");
@@ -128,7 +133,15 @@
                     window.location.href = "index.html";
                 })
                 .catch((error) => {
-                    alert("Erro ao cadastrar: " + error.message);
+                    if (error.code === 'auth/email-already-in-use') {
+                        alert("Este email já está em uso. Tente outro.");
+                    } else if (error.code === 'auth/invalid-email') {
+                        alert("O email inserido é inválido. Por favor, insira um email válido.");
+                    } else if (error.code === 'auth/weak-password') {
+                        alert("A senha deve ter pelo menos 6 caracteres.");
+                    } else {
+                        alert("Erro ao cadastrar: " + error.message);
+                    }
                 });
         };
 
