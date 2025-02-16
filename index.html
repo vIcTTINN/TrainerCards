@@ -32,44 +32,43 @@
             color: white;
         }
 
-        .user-info {
+        /* Estilo do icone de usuário */
+        .user-icon {
             position: fixed;
             top: 10px;
             right: 10px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #007BFF;
         }
 
-        .user-info img {
+        .user-icon img {
             width: 30px;
             height: 30px;
             border-radius: 50%;
-        }
-
-        .user-info span {
-            font-size: 16px;
-            font-weight: bold;
+            margin-right: 10px;
         }
     </style>
 </head>
 <body>
-    <!-- Espaço para o conteúdo do usuário -->
-    <div id="user-info" class="user-info" style="display: none;">
-        <img id="user-avatar" src="" alt="User Avatar">
-        <span id="user-name"></span>
-    </div>
-
-    <!-- Link para a página de login (exibido somente se o usuário não estiver logado) -->
+    <!-- Link para a página de login (visível apenas se o usuário não estiver logado) -->
     <a href="login.html" class="login-link" id="login-link">Entrar ou Cadastrar</a>
+
+    <!-- Exibe o nome do usuário e o ícone se estiver logado -->
+    <div class="user-icon" id="user-icon" style="display: none;">
+        <img src="https://www.w3schools.com/howto/img_avatar.png" alt="Ícone de Usuário">
+        <span id="username"></span>
+    </div>
 
     <h1>Bem-vindo ao meu site!</h1>
     <p>Site hospedado no GitHub Pages.</p>
 
     <!-- Importando e configurando o Firebase -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        import { initializeApp } from "firebase/app";
+        import { getAuth, onAuthStateChanged } from "firebase/auth";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAv9z44vYKeIhjZs3FkaScDIKTGn1wUx_8",
@@ -84,25 +83,17 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
-        // Função que é executada quando o estado do login muda
+        // Verifica o estado de autenticação do usuário
         onAuthStateChanged(auth, (user) => {
-            const loginLink = document.getElementById("login-link");
-            const userInfo = document.getElementById("user-info");
-            const userName = document.getElementById("user-name");
-            const userAvatar = document.getElementById("user-avatar");
-
             if (user) {
-                // Se o usuário estiver logado, esconde o link de login
-                loginLink.style.display = "none";
-                
-                // Exibe a silhueta e o nome do usuário
-                userInfo.style.display = "flex";
-                userName.textContent = user.displayName || user.email.split('@')[0]; // Exibe nome ou email
-                userAvatar.src = user.photoURL || 'https://www.w3schools.com/w3images/avatar2.png'; // Imagem do avatar
+                // Se o usuário estiver logado, exibe o ícone e o nome de usuário
+                document.getElementById("login-link").style.display = "none"; // Esconde o link de login
+                document.getElementById("user-icon").style.display = "flex"; // Exibe o ícone de usuário
+                document.getElementById("username").innerText = user.displayName || "Usuário"; // Mostra o nome de usuário
             } else {
                 // Se o usuário não estiver logado, exibe o link de login
-                loginLink.style.display = "block";
-                userInfo.style.display = "none";
+                document.getElementById("login-link").style.display = "block";
+                document.getElementById("user-icon").style.display = "none";
             }
         });
     </script>
