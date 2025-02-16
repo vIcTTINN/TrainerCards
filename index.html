@@ -84,7 +84,7 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
-        // Verifica o estado do login do usuário
+        // Função que é executada quando o estado do login muda
         onAuthStateChanged(auth, (user) => {
             const loginLink = document.getElementById("login-link");
             const userInfo = document.getElementById("user-info");
