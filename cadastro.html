@@ -60,7 +60,6 @@
 
     <!-- Firebase SDKs -->
     <script type="module">
-        // Importa os módulos do Firebase
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
@@ -106,7 +105,15 @@
                     });
                 })
                 .catch((error) => {
-                    alert("Erro ao cadastrar: " + error.message);
+                    if (error.code === 'auth/email-already-in-use') {
+                        alert("Usuário já cadastrado. Tente outro email.");
+                    } else if (error.code === 'auth/invalid-email') {
+                        alert("O email inserido é inválido. Por favor, insira um email válido.");
+                    } else if (error.code === 'auth/weak-password') {
+                        alert("A senha deve ter pelo menos 6 caracteres.");
+                    } else {
+                        alert("Erro ao cadastrar: " + error.message);
+                    }
                 });
         };
     </script>
