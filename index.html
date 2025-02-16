@@ -32,33 +32,37 @@
             color: white;
         }
 
-        /* Estilo do icone de usuário */
+        /* Estilo da silhueta com o nome do usuário */
         .user-icon {
             position: fixed;
             top: 10px;
             right: 10px;
-            display: flex;
-            align-items: center;
             font-size: 16px;
             font-weight: bold;
+            display: flex;
+            align-items: center;
             color: #007BFF;
+            background-color: white;
+            padding: 8px;
+            border: 1px solid #007BFF;
+            border-radius: 5px;
         }
 
         .user-icon img {
-            width: 30px;
-            height: 30px;
             border-radius: 50%;
-            margin-right: 10px;
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
         }
     </style>
 </head>
 <body>
-    <!-- Link para a página de login (visível apenas se o usuário não estiver logado) -->
-    <a href="login.html" class="login-link" id="login-link">Entrar ou Cadastrar</a>
+    <!-- Link para a página de login (aparece se não estiver logado) -->
+    <a href="login.html" class="login-link" id="loginLink">Entrar ou Cadastrar</a>
 
-    <!-- Exibe o nome do usuário e o ícone se estiver logado -->
-    <div class="user-icon" id="user-icon" style="display: none;">
-        <img src="https://www.w3schools.com/howto/img_avatar.png" alt="Ícone de Usuário">
+    <!-- Exibe o ícone do usuário (aparece se estiver logado) -->
+    <div class="user-icon" id="userIcon" style="display: none;">
+        <img src="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp" alt="User Icon">
         <span id="username"></span>
     </div>
 
@@ -67,8 +71,8 @@
 
     <!-- Importando e configurando o Firebase -->
     <script type="module">
-        import { initializeApp } from "firebase/app";
-        import { getAuth, onAuthStateChanged } from "firebase/auth";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAv9z44vYKeIhjZs3FkaScDIKTGn1wUx_8",
@@ -83,17 +87,25 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
-        // Verifica o estado de autenticação do usuário
+        // Verifica se o usuário está logado
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                // Se o usuário estiver logado, exibe o ícone e o nome de usuário
-                document.getElementById("login-link").style.display = "none"; // Esconde o link de login
-                document.getElementById("user-icon").style.display = "flex"; // Exibe o ícone de usuário
-                document.getElementById("username").innerText = user.displayName || "Usuário"; // Mostra o nome de usuário
+                // Se o usuário estiver logado, exibe a silhueta com o nome
+                const userIcon = document.getElementById('userIcon');
+                const username = document.getElementById('username');
+                const loginLink = document.getElementById('loginLink');
+                userIcon.style.display = 'flex';
+                loginLink.style.display = 'none';
+                username.textContent = user.displayName || 'Usuário';
+
+                // Se desejar, também pode mostrar a foto do perfil
+                // userIcon.querySelector('img').src = user.photoURL || 'URL-DEFAULT-IMAGE';
             } else {
-                // Se o usuário não estiver logado, exibe o link de login
-                document.getElementById("login-link").style.display = "block";
-                document.getElementById("user-icon").style.display = "none";
+                // Se não estiver logado, exibe o link de login
+                const loginLink = document.getElementById('loginLink');
+                const userIcon = document.getElementById('userIcon');
+                loginLink.style.display = 'inline-block';
+                userIcon.style.display = 'none';
             }
         });
     </script>
