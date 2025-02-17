@@ -7,133 +7,125 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 50px;
-        }
-
-        .container {
-            width: 300px;
-            margin: auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        input {
-            width: 90%;
-            padding: 8px;
-            margin: 8px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        .buttons {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            color: white;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: url('https://path_to_your_image'); /* Imagem de fundo */
+            background-size: cover;
+            background-position: center;
         }
 
-        button {
-            width: 48%;
+        .login-container {
+            background-color: rgba(34, 34, 34, 0.7); /* Fundo com opacidade */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+            width: 300px;
+            text-align: center;
+        }
+
+        .login-container h2 {
+            margin-bottom: 20px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #007BFF;
+            border-radius: 5px;
+            background-color: #333;
+            color: white;
+        }
+
+        .login-button {
+            width: 100%;
             padding: 10px;
             background-color: #007BFF;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            font-size: 16px;
         }
 
-        button:hover {
+        .login-button:hover {
             background-color: #0056b3;
         }
 
-        .btn-google {
-            width: 100%;
-            background-color: #db4437;
+        .signup-link {
+            margin-top: 15px;
+            color: #007BFF;
+            text-decoration: none;
         }
 
-        .btn-google:hover {
-            background-color: #b33629;
+        .signup-link:hover {
+            text-decoration: underline;
+        }
+
+        .title-image {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            width: 350px;
+            height: auto;
         }
     </style>
 </head>
 <body>
-    <h1>Página de Login</h1>
-    <div class="container">
-        <input type="email" id="email" placeholder="Email">
-        <input type="password" id="password" placeholder="Senha">
 
-        <div class="buttons">
-            <button onclick="login()">Entrar</button>
-            <!-- Remover o onclick direto aqui -->
-            <button id="btn-cadastrar">Cadastrar</button>
-        </div>
+    <!-- Imagem do título no canto superior esquerdo -->
+    <img src="https://github.com/vIcTTINN/TrainerCards/blob/2cf03d98950d75e15a9d9cc2c57ac7e181e0b014/TrainerCards-16-02-2025%20(1).png?raw=true" alt="Logo" class="title-image">
 
-        <button class="btn-google" onclick="loginGoogle()">Entrar com Google</button>
+    <div class="login-container">
+        <h2>Login</h2>
+        <form id="login-form">
+            <input type="email" class="input-field" id="email" placeholder="E-mail" required>
+            <input type="password" class="input-field" id="password" placeholder="Senha" required>
+            <button type="submit" class="login-button">Entrar</button>
+        </form>
+        <a href="signup.html" class="signup-link">Não tem uma conta? Cadastre-se</a>
     </div>
-    
-    <br>
-    <a href="index.html">Voltar para a Página Inicial</a>
 
-    <!-- Firebase SDKs -->
+    <!-- Importando o Firebase -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } 
-        from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
         const firebaseConfig = {
-            apiKey: "AIzaSyBp7w4FeDNUkSvv0CpuVtO1c1xm3w3aq0c",
-            authDomain: "trainercards-21331.firebaseapp.com",
-            projectId: "trainercards-21331",
-            storageBucket: "trainercards-21331.appspot.com",
-            messagingSenderId: "174531404677",
-            appId: "1:174531404677:web:d29410ea4693021c2e1aec",
-            measurementId: "G-Y4QGT8Y0P4"
+            apiKey: "AIzaSyAv9z44vYKeIhjZs3FkaScDIKTGn1wUx_8",
+            authDomain: "trainercards-2f2af.firebaseapp.com",
+            projectId: "trainercards-2f2af",
+            storageBucket: "trainercards-2f2af.firebasestorage.app",
+            messagingSenderId: "872674005080",
+            appId: "1:872674005080:web:b733b5d98e4c98c5dffa2d",
+            measurementId: "G-7PZ9HLKNSY"
         };
 
-        // Inicializa o Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        const provider = new GoogleAuthProvider();
 
-        // Função de login
-        window.login = function() {
-            const email = document.getElementById("email").value;
-            const password = document.getElementById("password").value;
+        const loginForm = document.getElementById('login-form');
+        loginForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
 
-            if (!email || !password) {
-                alert("Digite um email e/ou senha válidos.");
-                return;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                // Login bem-sucedido, redireciona para a página inicial
+                window.location.href = 'index.html';
+            } catch (error) {
+                alert('Erro no login: ' + error.message);
             }
-
-            signInWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
-                    alert("Login realizado com sucesso!");
-                    // Redireciona para a página inicial após login bem-sucedido
-                    window.location.href = "index.html";
-                })
-                .catch((error) => {
-                    alert("Erro ao fazer login: " + error.message);
-                });
-        };
-
-        // Função para redirecionar para a página de cadastro
-        document.getElementById('btn-cadastrar').addEventListener('click', function() {
-            window.location.href = "cadastro.html";
         });
-
-        // Login com Google
-        window.loginGoogle = function() {
-            signInWithPopup(auth, provider)
-                .then((result) => {
-                    alert("Login com Google realizado!");
-                    // Redireciona para a página inicial após login com Google
-                    window.location.href = "index.html";
-                })
-                .catch((error) => {
-                    alert("Erro ao fazer login com Google: " + error.message);
-                });
-        };
     </script>
+
 </body>
 </html>
