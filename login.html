@@ -65,7 +65,8 @@
 
         <div class="buttons">
             <button onclick="login()">Entrar</button>
-            <button onclick="cadastrar()">Cadastrar</button>
+            <!-- Remover o onclick direto aqui -->
+            <button id="btn-cadastrar">Cadastrar</button>
         </div>
 
         <button class="btn-google" onclick="loginGoogle()">Entrar com Google</button>
@@ -84,4 +85,55 @@
             apiKey: "AIzaSyBp7w4FeDNUkSvv0CpuVtO1c1xm3w3aq0c",
             authDomain: "trainercards-21331.firebaseapp.com",
             projectId: "trainercards-21331",
-            stor
+            storageBucket: "trainercards-21331.appspot.com",
+            messagingSenderId: "174531404677",
+            appId: "1:174531404677:web:d29410ea4693021c2e1aec",
+            measurementId: "G-Y4QGT8Y0P4"
+        };
+
+        // Inicializa o Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
+
+        // Função de login
+        window.login = function() {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            if (!email || !password) {
+                alert("Digite um email e/ou senha válidos.");
+                return;
+            }
+
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    alert("Login realizado com sucesso!");
+                    // Redireciona para a página inicial após login bem-sucedido
+                    window.location.href = "index.html";
+                })
+                .catch((error) => {
+                    alert("Erro ao fazer login: " + error.message);
+                });
+        };
+
+        // Função para redirecionar para a página de cadastro
+        document.getElementById('btn-cadastrar').addEventListener('click', function() {
+            window.location.href = "cadastro.html";
+        });
+
+        // Login com Google
+        window.loginGoogle = function() {
+            signInWithPopup(auth, provider)
+                .then((result) => {
+                    alert("Login com Google realizado!");
+                    // Redireciona para a página inicial após login com Google
+                    window.location.href = "index.html";
+                })
+                .catch((error) => {
+                    alert("Erro ao fazer login com Google: " + error.message);
+                });
+        };
+    </script>
+</body>
+</html>
