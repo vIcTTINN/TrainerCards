@@ -11,7 +11,6 @@
             padding: 0;
             background-color: #000;
             color: white;
-            overflow-x: hidden;
             text-align: center;
         }
 
@@ -72,7 +71,6 @@
             transform: translateX(-50%); /* Centraliza a Pokébola horizontalmente */
             width: 50px; /* Tamanho pequeno da Pokébola */
             height: auto;
-            transition: transform 0.2s ease;
         }
 
         /* Efeito de rotação para a Pokébola */
@@ -88,9 +86,20 @@
                 transform: translateX(-50%) rotate(360deg);
             }
         }
+
+        /* Imagem do logo ou outra imagem no canto superior esquerdo */
+        .logo {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 60px;
+        }
     </style>
 </head>
 <body>
+
+    <!-- Imagem do logo ou outra imagem no canto superior esquerdo -->
+    <img src="URL_DA_IMAGEM_AQUI" alt="Logo" class="logo">
 
     <div class="login-container">
         <h2>Login</h2>
